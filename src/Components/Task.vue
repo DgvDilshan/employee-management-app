@@ -7,16 +7,24 @@
         </div>
         <!-- form -->
         <div class="form">
-          <input type="text" placeholder="New Task" />
-          <button><i class="fas fa-plus"></i></button>
+          <input 
+            type="text" 
+            placeholder="New Task"  
+            v-model="newTask" 
+            @keyup.enter="addTask"/>
+          <button @click="addTask"><i class="fas fa-plus"></i></button>
         </div>
         <!-- task lists -->
         <div class="taskItems">
           <ul>
-            <li v-for="task in tasks" :key="task.id">
-              <button><i class="far fa-circle"></i> {{ task.title }}</button>
-              <button><i class="far fa-trash-alt"></i></button>
-            </li>
+            <task-item
+              v-bind:task="task"
+              v-for="(task,index) in tasks"
+              :key="task.id"
+              @remove="removeTask(index)"
+              @complete="completeTask(task)"
+              >
+            </task-item>
         
           </ul>
         </div>
@@ -34,9 +42,18 @@
   </template>
   
   <script>
+  import TaskItem from './Task-item.vue';
   export default {
     name: "Task",
     props:['tasks'],
+    components:{
+      TaskItem
+    },
+    data(){
+      return {
+        newTask : ""
+      }
+    },
     computed:{
       incomplete(){
         return this.tasks.filter(this.inProgress).length;
@@ -44,6 +61,15 @@
 
     },
     methods:{
+      addTask(){
+        if(this.newTask){
+          this.tasks.push({
+            title: this.newTask,
+            completed: false,
+          });
+          this.newTask = "";
+        }
+      },
       inProgress(task){
         return !this.isCompleted(task);
       },
@@ -55,6 +81,12 @@
       },
       clearAll(){
         this.tasks = [];
+      },
+      removeTask(index){
+        this.tasks.splice(index, 1);
+      },
+      completeTask(task){
+        task.completed=!task.completed
       }
     },
   };
