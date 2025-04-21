@@ -1,23 +1,47 @@
 <template>
   <div id="app">
-    <h1>{{ msg }}</h1>
-    <p>{{ news }}</p>
-    
+    <task></task>
   </div>
 </template>
 
 <script>
+import Task from "./components/Task";
+
 export default {
-  name: 'app',
-  data () {
+  name: "App",
+  components: {
+    Task,
+  },
+  data() {
     return {
-      msg: 'Welcome to Your Vue.js App',
-       news: 'my first news'
-    }
-  }
-}
+      tasks: [
+        {
+          id: 1,
+          title: "Learn Vue JS",
+          completed: true,
+        },
+        {
+          id: 2,
+          title: "Watch netflix",
+          completed: true,
+        },
+        {
+          id: 3,
+          title: "Go shopping",
+          completed: false,
+        },
+        {
+          id: 4,
+          title: "Learn guitar",
+          completed: false,
+        },
+        {
+          id: 5,
+          title: "Send email",
+          completed: false,
+        },
+      ],
+    };
+  },
+};
 </script>
-
-<style>
-
-</style>
