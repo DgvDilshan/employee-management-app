@@ -13,28 +13,21 @@
         <!-- task lists -->
         <div class="taskItems">
           <ul>
-            <li>
-              <button>Learn Vue JS</button>
+            <li v-for="task in tasks" :key="task.id">
+              <button><i class="far fa-circle"></i> {{ task.title }}</button>
               <button><i class="far fa-trash-alt"></i></button>
             </li>
-            <li>
-              <button>Watch netflix</button>
-              <button><i class="far fa-trash-alt"></i></button>
-            </li>
-            <li>
-              <button>Read book</button>
-              <button><i class="far fa-trash-alt"></i></button>
-            </li>
+        
           </ul>
         </div>
         <!-- buttons -->
         <div class="clearBtns">
-          <button>Clear completed</button>
-          <button>Clear all</button>
+          <button  @click="clearCompleted">Clear completed</button>
+          <button @click="clearAll">Clear all</button>
         </div>
         <!-- pending task -->
         <div class="pendingTasks">
-          <span>Pending Tasks: </span>
+          <span>Pending Tasks:{{incomplete}} </span>
         </div>
       </div>
     </div>
@@ -43,6 +36,27 @@
   <script>
   export default {
     name: "Task",
+    props:['tasks'],
+    computed:{
+      incomplete(){
+        return this.tasks.filter(this.inProgress).length;
+      }
+
+    },
+    methods:{
+      inProgress(task){
+        return !this.isCompleted(task);
+      },
+      isCompleted(task){
+        return task.completed
+      },
+      clearCompleted(){
+        this.tasks = this.tasks.filter(this.inProgress);
+      },
+      clearAll(){
+        this.tasks = [];
+      }
+    },
   };
   </script>
   
